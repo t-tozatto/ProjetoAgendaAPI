@@ -1,7 +1,7 @@
 ﻿using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
-using System;
+using System.Linq;
 
 namespace ProjetoAgendaAPI.Repositories
 {
@@ -15,27 +15,30 @@ namespace ProjetoAgendaAPI.Repositories
 
         public void Atualizar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _banco.Update(usuario);
+            _banco.SaveChanges();
         }
 
         public void Cadastrar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _banco.Add(usuario);
+            _banco.SaveChanges();
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _banco.Remove(ObterUsuario(id));
+            _banco.SaveChanges();
         }
 
         public Usuario Login(string nome, string senha)
         {
-            throw new NotImplementedException();
+            return _banco.Usuario.Where(x => x.Nome.Equals(nome) && x.Senha.Equals(senha)).FirstOrDefault();
         }
 
-        public Usuario ObterUsuario(string nome, string senha)
+        public Usuario ObterUsuario(int id)
         {
-            throw new NotImplementedException();
+            return _banco.Usuario.Where(x => x.Id.Equals(id)).FirstOrDefault();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjetoAgendaAPI.Repositories
 {
@@ -14,29 +14,32 @@ namespace ProjetoAgendaAPI.Repositories
             _banco = banco;
         }
 
-        public void Atualizar(Contato usuario)
+        public void Atualizar(Contato contato)
         {
-            throw new NotImplementedException();
+            _banco.Update(contato);
+            _banco.SaveChanges();
         }
 
-        public void Cadastrar(Contato usuario)
+        public void Cadastrar(Contato contato)
         {
-            throw new NotImplementedException();
+            _banco.Add(contato);
+            _banco.SaveChanges();
         }
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            _banco.Remove(ObterContato(id));
+            _banco.SaveChanges();
         }
 
         public Contato ObterContato(int id)
         {
-            throw new NotImplementedException();
+            return _banco.Contato.Where(x => x.Id.Equals(id)).FirstOrDefault();
         }
 
         public IEnumerable<Contato> ObterTodosContatos()
         {
-            throw new NotImplementedException();
+            return _banco.Contato;
         }
     }
 }

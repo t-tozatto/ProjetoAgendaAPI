@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjetoAgendaAPI.Models
 {
@@ -9,11 +7,9 @@ namespace ProjetoAgendaAPI.Models
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
-        [Index("EmailIndex", IsUnique = true)]
         [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
 
-        [Index("NomeIndex", IsUnique = true)]
         [JsonProperty(PropertyName = "nome")]
         public string Nome { get; set; }
 
