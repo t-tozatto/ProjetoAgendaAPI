@@ -23,14 +23,14 @@ namespace ProjetoAgendaAPI.Repositories
             _banco.SaveChangesAsync();
         }
 
-        public async Task<ActionResult<Contato>> ObterContato(int id)
+        public async Task<ActionResult<Contato>> ObterContato(int id, int idUsuario)
         {
-            return await _banco.Contato.FindAsync(id);
+            return await _banco.Contato.FirstOrDefaultAsync(x=> x.Id.Equals(id) && x.IdUsuario.Equals(idUsuario));
         }
 
-        public async Task<ActionResult<IEnumerable<Contato>>> ObterTodosContatos()
+        public async Task<ActionResult<IEnumerable<Contato>>> ObterTodosContatos(int idUsuario)
         {
-            return await _banco.Contato.ToListAsync();
+            return await _banco.Contato.Where(x => x.IdUsuario.Equals(idUsuario)).ToListAsync();
         }
 
         public async Task<bool> Atualizar(Contato contato)
@@ -45,11 +45,11 @@ namespace ProjetoAgendaAPI.Repositories
                 return await Task.FromResult(false);
         }
 
-        public bool Excluir(int id)
+        public bool Excluir(int id, int idUsuario)
         {
             if (ContatoExiste(id))
             {
-                _banco.Remove(ObterContato(id));
+                _banco.Remove(ObterContato(id, idUsuario));
                 _banco.SaveChangesAsync();
                 return true;
             }

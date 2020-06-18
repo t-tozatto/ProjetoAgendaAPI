@@ -18,14 +18,21 @@ namespace ProjetoAgendaAPI.Controllers
             _usuarioRepository = usuarioRepository;
         }
 
-        // GET: api/Usuario
+        /// <summary>
+        /// GET: api/Usuario
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario()
         {
             return await _usuarioRepository.ObterTodosUsuarios();
         }
 
-        // GET: api/Usuario/{id}
+        /// <summary>
+        /// GET: api/Usuario/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
@@ -37,7 +44,12 @@ namespace ProjetoAgendaAPI.Controllers
             return usuario;
         }
 
-        // GET: api/Usuario/{nome}/{senha}
+        /// <summary>
+        /// GET: api/Usuario/{nome}/{senha}
+        /// </summary>
+        /// <param name="nome"></param>
+        /// <param name="senha"></param>
+        /// <returns></returns>
         [HttpGet("{nome}/{senha}")]
         public async Task<ActionResult<Usuario>> Login(string nome, string senha)
         {
@@ -49,7 +61,12 @@ namespace ProjetoAgendaAPI.Controllers
             return usuario;
         }
 
-        // PUT: api/Usuario/{id}
+        /// <summary>
+        /// PUT: api/Usuario/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult PutUsuario(int id, Usuario usuario)
         {
@@ -69,7 +86,11 @@ namespace ProjetoAgendaAPI.Controllers
             }
         }
 
-        // POST: api/Usuario
+        /// <summary>
+        /// POST: api/Usuario
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<Usuario> PostUsuario(Usuario usuario)
         {
@@ -77,7 +98,11 @@ namespace ProjetoAgendaAPI.Controllers
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
         }
 
-        // DELETE: api/Usuario/{5}
+        /// <summary>
+        /// DELETE: api/Usuario/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult<Usuario> DeleteUsuario(int id)
         {

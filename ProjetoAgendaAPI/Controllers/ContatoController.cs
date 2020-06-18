@@ -18,18 +18,27 @@ namespace ProjetoAgendaAPI.Controllers
             _contatoRepository = contatoRepository;
         }
 
-        // GET: api/Contato
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Contato>>> GetContato()
+        /// <summary>
+        /// GET: api/Contato/{id_usuario}
+        /// </summary>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        [HttpGet("{id_usuario}")]
+        public async Task<ActionResult<IEnumerable<Contato>>> GetContato(int idUsuario)
         {
-            return await _contatoRepository.ObterTodosContatos();
+            return await _contatoRepository.ObterTodosContatos(idUsuario);
         }
 
-        // GET: api/Contato/{id}
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Contato>> GetContato(int id)
+        /// <summary>
+        /// GET: api/Contato/{id}/{id_usuario}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/{id_usuario}")]
+        public async Task<ActionResult<Contato>> GetContato(int id, int idUsuario)
         {
-            var contato = await _contatoRepository.ObterContato(id);
+            var contato = await _contatoRepository.ObterContato(id, idUsuario);
 
             if (contato == null)
                 return NotFound();
@@ -37,7 +46,12 @@ namespace ProjetoAgendaAPI.Controllers
             return contato;
         }
 
-        // PUT: api/Contato/{id}
+        /// <summary>
+        /// PUT: api/Contato/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="contato"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult PutContato(int id, Contato contato)
         {
@@ -57,7 +71,11 @@ namespace ProjetoAgendaAPI.Controllers
             }
         }
 
-        // POST: api/Contato
+        /// <summary>
+        /// POST: api/Contato
+        /// </summary>
+        /// <param name="contato"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<Contato> PostContato(Contato contato)
         {
@@ -65,11 +83,16 @@ namespace ProjetoAgendaAPI.Controllers
             return CreatedAtAction("GetContato", new { id = contato.Id }, contato);
         }
 
-        // DELETE: api/Contato/{id}
-        [HttpDelete("{id}")]
-        public ActionResult<Contato> DeleteContato(int id)
+        /// <summary>
+        /// DELETE: api/Contato/{id}/{id_usuario}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/{id_usuario}")]
+        public ActionResult<Contato> DeleteContato(int id, int idUsuario)
         {
-            if (_contatoRepository.Excluir(id))
+            if (_contatoRepository.Excluir(id, idUsuario))
                 return Ok();
             else
                 return NotFound();

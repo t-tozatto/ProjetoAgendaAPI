@@ -8,10 +8,10 @@ namespace ProjetoAgendaAPI.Repositories.Contracts
     public interface IContatoRepository
     {
         void Cadastrar(Contato contato);
-        Task<ActionResult<Contato>> ObterContato(int id);
-        Task<ActionResult<IEnumerable<Contato>>> ObterTodosContatos();
+        Task<ActionResult<Contato>> ObterContato(int id, int idUsuario);
+        Task<ActionResult<IEnumerable<Contato>>> ObterTodosContatos(int idUsuario);
         Task<bool> Atualizar(Contato contato);
-        bool Excluir(int id);
+        bool Excluir(int id, int idUsuario);
         bool ContatoExiste(int id);
     }
 }

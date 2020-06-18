@@ -18,5 +18,8 @@ namespace ProjetoAgendaAPI.Models
 
         [JsonProperty(PropertyName = "telefone")]
         public string Telefone { get; set; }
+
+        [JsonProperty(PropertyName = "id_usuario")]
+        public int IdUsuario { get; set; }
     }
 }
