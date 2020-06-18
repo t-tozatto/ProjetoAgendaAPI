@@ -1,8 +1,11 @@
-﻿using ProjetoAgendaAPI.Database;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoAgendaAPI.Repositories
 {
@@ -14,32 +17,49 @@ namespace ProjetoAgendaAPI.Repositories
             _banco = banco;
         }
 
-        public void Atualizar(Contato contato)
-        {
-            _banco.Update(contato);
-            _banco.SaveChanges();
-        }
-
         public void Cadastrar(Contato contato)
         {
-            _banco.Add(contato);
-            _banco.SaveChanges();
+            _banco.Contato.Add(contato);
+            _banco.SaveChangesAsync();
         }
 
-        public void Excluir(int id)
+        public async Task<ActionResult<Contato>> ObterContato(int id)
         {
-            _banco.Remove(ObterContato(id));
-            _banco.SaveChanges();
+            return await _banco.Contato.FindAsync(id);
         }
 
-        public Contato ObterContato(int id)
+        public async Task<ActionResult<IEnumerable<Contato>>> ObterTodosContatos()
         {
-            return _banco.Contato.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return await _banco.Contato.ToListAsync();
         }
 
-        public IEnumerable<Contato> ObterTodosContatos()
+        public async Task<bool> Atualizar(Contato contato)
         {
-            return _banco.Contato;
+            if (ContatoExiste(contato.Id))
+            {
+                _banco.Contato.Update(contato);
+                await _banco.SaveChangesAsync();
+                return await Task.FromResult(true);
+            }
+            else
+                return await Task.FromResult(false);
+        }
+
+        public bool Excluir(int id)
+        {
+            if (ContatoExiste(id))
+            {
+                _banco.Remove(ObterContato(id));
+                _banco.SaveChangesAsync();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool ContatoExiste(int id)
+        {
+            return _banco.Contato.Any(e => e.Id.Equals(id));
         }
     }
 }

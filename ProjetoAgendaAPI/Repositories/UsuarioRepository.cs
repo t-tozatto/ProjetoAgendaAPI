@@ -1,7 +1,11 @@
-﻿using ProjetoAgendaAPI.Database;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoAgendaAPI.Repositories
 {
@@ -13,32 +17,57 @@ namespace ProjetoAgendaAPI.Repositories
             _banco = banco;
         }
 
-        public void Atualizar(Usuario usuario)
-        {
-            _banco.Update(usuario);
-            _banco.SaveChanges();
-        }
-
         public void Cadastrar(Usuario usuario)
         {
             _banco.Add(usuario);
             _banco.SaveChanges();
         }
 
-        public void Excluir(int id)
+        public async Task<ActionResult<Usuario>> ObterUsuario(int id)
         {
-            _banco.Remove(ObterUsuario(id));
+            return await _banco.Usuario.FindAsync(id);
+        }
+
+        public async Task<ActionResult<IEnumerable<Usuario>>> ObterTodosUsuarios()
+        {
+            return await _banco.Usuario.ToListAsync();
+        }
+
+        public async Task<Usuario> Login(string nome, string senha)
+        {
+            return await _banco.Usuario.FirstOrDefaultAsync(x => x.Nome.Equals(nome) && x.Senha.Equals(senha));
+        }
+
+        public async Task<bool> Atualizar(Usuario usuario)
+        {
+            _banco.Update(usuario);
             _banco.SaveChanges();
+
+            if (UsuarioExiste(usuario.Id))
+            {
+                _banco.Usuario.Update(usuario);
+                await _banco.SaveChangesAsync();
+                return await Task.FromResult(true);
+            }
+            else
+                return await Task.FromResult(false);
         }
 
-        public Usuario Login(string nome, string senha)
+        public bool Excluir(int id)
         {
-            return _banco.Usuario.Where(x => x.Nome.Equals(nome) && x.Senha.Equals(senha)).FirstOrDefault();
+            if (UsuarioExiste(id))
+            {
+                _banco.Remove(ObterUsuario(id));
+                _banco.SaveChangesAsync();
+                return true;
+            }
+            else
+                return false;
         }
 
-        public Usuario ObterUsuario(int id)
+        public bool UsuarioExiste(int id)
         {
-            return _banco.Usuario.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return _banco.Usuario.Any(e => e.Id.Equals(id));
         }
     }
 }

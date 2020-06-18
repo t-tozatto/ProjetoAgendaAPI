@@ -1,17 +1,17 @@
-﻿using ProjetoAgendaAPI.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoAgendaAPI.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ProjetoAgendaAPI.Repositories.Contracts
 {
-    interface IContatoRepository
+    public interface IContatoRepository
     {
-        //CRUD
-        void Cadastrar(Contato usuario);
-
-        Contato ObterContato(int id);
-        IEnumerable<Contato> ObterTodosContatos();
-
-        void Atualizar(Contato usuario);
-        void Excluir(int id);
+        void Cadastrar(Contato contato);
+        Task<ActionResult<Contato>> ObterContato(int id);
+        Task<ActionResult<IEnumerable<Contato>>> ObterTodosContatos();
+        Task<bool> Atualizar(Contato contato);
+        bool Excluir(int id);
+        bool ContatoExiste(int id);
     }
 }
