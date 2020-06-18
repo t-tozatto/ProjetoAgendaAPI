@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
 
-namespace ProjetoAgendaAPI.Controllers
+namespace ProjetoAgendaAPI.Controllers.v1
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
@@ -19,33 +21,41 @@ namespace ProjetoAgendaAPI.Controllers
         }
 
         /// <summary>
-        /// GET: api/Usuario
+        /// GET: api/v1/Usuario
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario()
         {
-            return await _usuarioRepository.ObterTodosUsuarios();
+            IEnumerable<Usuario> listaUsuario = await _usuarioRepository.ObterTodosUsuarios();
+
+            if (listaUsuario == null || listaUsuario.Count() == 0)
+                return NotFound();
+
+            return Ok(listaUsuario);
         }
 
         /// <summary>
-        /// GET: api/Usuario/{id}
+        /// GET: api/v1/usuario/{id}
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-            var usuario = await _usuarioRepository.ObterUsuario(id);
+            if (id <= 0)
+                return BadRequest();
 
-            if (usuario == null)
+            Usuario usuario = await _usuarioRepository.ObterUsuario(id);
+
+            if (usuario == null || usuario.Id == 0)
                 return NotFound();
 
-            return usuario;
+            return Ok(usuario);
         }
 
         /// <summary>
-        /// GET: api/Usuario/{nome}/{senha}
+        /// GET: api/v1/usuario/{nome}/{senha}
         /// </summary>
         /// <param name="nome"></param>
         /// <param name="senha"></param>
@@ -53,25 +63,33 @@ namespace ProjetoAgendaAPI.Controllers
         [HttpGet("{nome}/{senha}")]
         public async Task<ActionResult<Usuario>> Login(string nome, string senha)
         {
-            var usuario = await _usuarioRepository.Login(nome, senha);
+            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(senha))
+                return BadRequest();
 
-            if (usuario == null)
+            Usuario usuario = await _usuarioRepository.Login(nome, senha);
+
+            if (usuario == null || usuario.Id == 0)
                 return NotFound();
 
             return usuario;
         }
 
         /// <summary>
-        /// PUT: api/Usuario/{id}
+        /// PUT: api/v1/usuario/{id}
         /// </summary>
         /// <param name="id"></param>
         /// <param name="usuario"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult PutUsuario(int id, Usuario usuario)
+        public IActionResult PutUsuario(int id, [FromBody] Usuario usuario)
         {
             if (id != usuario.Id)
                 return BadRequest();
+
+            TryValidateModel(usuario);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             try
             {
@@ -87,19 +105,27 @@ namespace ProjetoAgendaAPI.Controllers
         }
 
         /// <summary>
-        /// POST: api/Usuario
+        /// POST: api/v1/usuario
         /// </summary>
         /// <param name="usuario"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<Usuario> PostUsuario(Usuario usuario)
+        public ActionResult<Usuario> PostUsuario([FromBody] Usuario usuario)
         {
+            if(usuario == null)
+                return BadRequest();
+
+            TryValidateModel(usuario);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _usuarioRepository.Cadastrar(usuario);
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
         }
 
         /// <summary>
-        /// DELETE: api/Usuario/{id}
+        /// DELETE: api/v1/usuario/{id}
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
 
-namespace ProjetoAgendaAPI.Controllers
+namespace ProjetoAgendaAPI.Controllers.v1
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ContatoController : ControllerBase
     {
         private readonly IContatoRepository _contatoRepository;
@@ -19,18 +21,26 @@ namespace ProjetoAgendaAPI.Controllers
         }
 
         /// <summary>
-        /// GET: api/Contato/{id_usuario}
+        /// GET: api/v1/Contato/{id_usuario}
         /// </summary>
         /// <param name="idUsuario"></param>
         /// <returns></returns>
         [HttpGet("{id_usuario}")]
         public async Task<ActionResult<IEnumerable<Contato>>> GetContato(int idUsuario)
         {
-            return await _contatoRepository.ObterTodosContatos(idUsuario);
+            if (idUsuario <= 0)
+                return BadRequest();
+
+            IEnumerable<Contato> listaContato = await _contatoRepository.ObterTodosContatos(idUsuario);
+
+            if (listaContato == null || listaContato.Count() == 0)
+                return NotFound();
+
+            return Ok(listaContato);
         }
 
         /// <summary>
-        /// GET: api/Contato/{id}/{id_usuario}
+        /// GET: api/v1/Contato/{id}/{id_usuario}
         /// </summary>
         /// <param name="id"></param>
         /// <param name="idUsuario"></param>
@@ -38,29 +48,37 @@ namespace ProjetoAgendaAPI.Controllers
         [HttpGet("{id}/{id_usuario}")]
         public async Task<ActionResult<Contato>> GetContato(int id, int idUsuario)
         {
-            var contato = await _contatoRepository.ObterContato(id, idUsuario);
+            if (id <= 0 || idUsuario <= 0)
+                return BadRequest();
 
-            if (contato == null)
+            Contato contato = await _contatoRepository.ObterContato(id, idUsuario);
+
+            if (contato == null || contato.Id == 0)
                 return NotFound();
 
             return contato;
         }
 
         /// <summary>
-        /// PUT: api/Contato/{id}
+        /// PUT: api/v1/Contato/{id}
         /// </summary>
         /// <param name="id"></param>
         /// <param name="contato"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult PutContato(int id, Contato contato)
+        public IActionResult PutContato(int id, [FromBody] Contato contato)
         {
             if (id != contato.Id)
                 return BadRequest();
 
+            TryValidateModel(contato);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                if(_contatoRepository.Atualizar(contato).Result)
+                if (_contatoRepository.Atualizar(contato).Result)
                     return Ok();
                 else
                     return NotFound();
@@ -72,19 +90,27 @@ namespace ProjetoAgendaAPI.Controllers
         }
 
         /// <summary>
-        /// POST: api/Contato
+        /// POST: api/v1/Contato
         /// </summary>
         /// <param name="contato"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<Contato> PostContato(Contato contato)
+        public ActionResult<Contato> PostContato([FromBody] Contato contato)
         {
+            if (contato == null)
+                return BadRequest();
+
+            TryValidateModel(contato);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _contatoRepository.Cadastrar(contato);
             return CreatedAtAction("GetContato", new { id = contato.Id }, contato);
         }
 
         /// <summary>
-        /// DELETE: api/Contato/{id}/{id_usuario}
+        /// DELETE: api/v1/Contato/{id}/{id_usuario}
         /// </summary>
         /// <param name="id"></param>
         /// <param name="idUsuario"></param>

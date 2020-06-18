@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Models;
 using ProjetoAgendaAPI.Repositories.Contracts;
@@ -23,12 +22,12 @@ namespace ProjetoAgendaAPI.Repositories
             _banco.SaveChanges();
         }
 
-        public async Task<ActionResult<Usuario>> ObterUsuario(int id)
+        public async Task<Usuario> ObterUsuario(int id)
         {
             return await _banco.Usuario.FindAsync(id);
         }
 
-        public async Task<ActionResult<IEnumerable<Usuario>>> ObterTodosUsuarios()
+        public async Task<IEnumerable<Usuario>> ObterTodosUsuarios()
         {
             return await _banco.Usuario.ToListAsync();
         }

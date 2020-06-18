@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Repositories;
 using ProjetoAgendaAPI.Repositories.Contracts;
+using System.Collections.Generic;
 
 namespace ProjetoAgendaAPI
 {
@@ -28,6 +29,8 @@ namespace ProjetoAgendaAPI
             services.AddScoped<IContatoRepository, ContatoRepository>();
 
             services.AddDbContext<AgendaContext>(options => options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=agenda;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+
+            services.AddApiVersioning();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +40,9 @@ namespace ProjetoAgendaAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
