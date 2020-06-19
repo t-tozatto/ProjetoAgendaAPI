@@ -40,6 +40,6 @@ namespace ProjetoAgendaAPI.Models
         [Column("id_usuario")]
         [ForeignKey("Usuario")]
         public int IdUsuario { get; set; }
-        public Usuario Usuario { get; set; }
+        private Usuario Usuario { get; set; }
     }
 }

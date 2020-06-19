@@ -56,8 +56,8 @@ namespace ProjetoAgendaAPI.Repositories
         {
             if (UsuarioExiste(id))
             {
-                _banco.Remove(ObterUsuario(id));
-                _banco.SaveChangesAsync();
+                _banco.Remove(_banco.Usuario.FirstOrDefault(x => x.Id.Equals(id)));
+                _banco.SaveChanges();
                 return true;
             }
             else
@@ -67,6 +67,16 @@ namespace ProjetoAgendaAPI.Repositories
         public bool UsuarioExiste(int id)
         {
             return _banco.Usuario.Any(e => e.Id.Equals(id));
+        }
+
+        public int UsuarioComNomeSenhaOuEmailRepetido(Usuario usuario)
+        {
+            if (_banco.Usuario.Any(e => !e.Id.Equals(usuario.Id) && e.Nome.Equals(usuario.Nome)))
+                return 1;
+            else if (_banco.Usuario.Any(e => !e.Id.Equals(usuario.Id) && e.Email.Equals(usuario.Email)))
+                return 2;
+            else
+                return 0;
         }
     }
 }

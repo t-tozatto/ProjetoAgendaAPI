@@ -13,5 +13,13 @@ namespace ProjetoAgendaAPI.Repositories.Contracts
         Task<bool> Atualizar(Usuario usuario);
         bool Excluir(int id);
         bool UsuarioExiste(int id);
+        /// <summary>
+        /// 0 - Sem Erros
+        /// 1 - Nome duplicado
+        /// 2 - E-mail duplicado
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
+        int UsuarioComNomeSenhaOuEmailRepetido(Usuario usuario);
     }
 }

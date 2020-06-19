@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetoAgendaAPI.Models;
@@ -40,7 +41,7 @@ namespace ProjetoAgendaAPI.Controllers.v1
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetUsuario")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
             if (id <= 0)
@@ -83,6 +84,9 @@ namespace ProjetoAgendaAPI.Controllers.v1
         [HttpPut("{id}")]
         public IActionResult PutUsuario(int id, [FromBody] Usuario usuario)
         {
+            if (usuario == null || usuario.Id == 0)
+                return NotFound();
+
             if (id != usuario.Id)
                 return BadRequest();
 
@@ -112,7 +116,7 @@ namespace ProjetoAgendaAPI.Controllers.v1
         [HttpPost]
         public ActionResult<Usuario> PostUsuario([FromBody] Usuario usuario)
         {
-            if(usuario == null)
+            if (usuario == null)
                 return BadRequest();
 
             TryValidateModel(usuario);
@@ -120,8 +124,17 @@ namespace ProjetoAgendaAPI.Controllers.v1
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            int validacao = _usuarioRepository.UsuarioComNomeSenhaOuEmailRepetido(usuario);
+            if (validacao > 0)
+            {
+                if (validacao == 1)
+                    return Problem("Já existe um usuário com esse nome.", nameof(PostUsuario), 406);
+                else
+                    return Problem("Já existe um usuário utilizando esse e-mail.", nameof(PostUsuario), 406);
+            }
+
             _usuarioRepository.Cadastrar(usuario);
-            return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id });
         }
 
         /// <summary>
@@ -130,9 +143,11 @@ namespace ProjetoAgendaAPI.Controllers.v1
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public ActionResult<Usuario> DeleteUsuario(int id)
+        public ActionResult DeleteUsuario(int id)
         {
-            if (_usuarioRepository.Excluir(id))
+            if (id <= 0)
+                return NotFound();
+            else if (_usuarioRepository.Excluir(id))
                 return Ok();
             else
                 return NotFound();
