@@ -19,7 +19,7 @@ namespace ProjetoAgendaAPI.Repositories
         public void Cadastrar(Contato contato)
         {
             _banco.Contato.Add(contato);
-            _banco.SaveChangesAsync();
+            _banco.SaveChanges();
         }
 
         public async Task<Contato> ObterContato(int id, int idUsuario)
@@ -48,8 +48,8 @@ namespace ProjetoAgendaAPI.Repositories
         {
             if (ContatoExiste(id))
             {
-                _banco.Remove(ObterContato(id, idUsuario));
-                _banco.SaveChangesAsync();
+                _banco.Remove(_banco.Contato.FirstOrDefault(x => x.Id.Equals(id) && x.IdUsuario.Equals(idUsuario)));
+                _banco.SaveChanges();
                 return true;
             }
             else

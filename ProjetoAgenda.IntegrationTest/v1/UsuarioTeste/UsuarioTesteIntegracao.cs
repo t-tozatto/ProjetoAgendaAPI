@@ -379,7 +379,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando criar um usuário que ultrapassa o maxLength do campo senha.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(20)]
+        [Fact, TestPriority(22)]
         public async Task TentandoCriarUsuarioMaxLengthEmail()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -395,7 +395,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando criar um usuário que ultrapassa o maxLength do campo senha.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(21)]
+        [Fact, TestPriority(23)]
         public async Task TentandoCriarUsuarioMinLengthEmail()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -411,7 +411,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando criar um usuário que ultrapassa o maxLength do campo senha.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(20)]
+        [Fact, TestPriority(24)]
         public async Task TentandoCriarUsuarioMaxLengthNome()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -427,7 +427,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando criar um usuário que ultrapassa o maxLength do campo senha.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(21)]
+        [Fact, TestPriority(25)]
         public async Task TentandoCriarUsuarioMinLengthNome()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -443,7 +443,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando alterar um usuário que ultrapassa o maxLength do campo senha.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(26)]
         public async Task AlterandoUsuarioMaxLengthSenha()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -467,7 +467,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         ///  Tentando alterar um usuário que ultrapassa sem o minLength do campo senha.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(27)]
         public async Task AlterandoUsuarioMinLengthSenha()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -491,7 +491,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando alterar um usuário que ultrapassa o maxLength do campo email.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(28)]
         public async Task AlterandoUsuarioMaxLengthEmail()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -515,7 +515,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         ///  Tentando alterar um usuário que ultrapassa sem o minLength do campo email.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(29)]
         public async Task AlterandoUsuarioMinLengthEmail()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -539,7 +539,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Tentando alterar um usuário que ultrapassa o maxLength do campo nome.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(30)]
         public async Task AlterandoUsuarioMaxLengthNome()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -563,7 +563,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         ///  Tentando alterar um usuário que ultrapassa sem o minLength do campo nome.
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(18)]
+        [Fact, TestPriority(31)]
         public async Task AlterandoUsuarioMinLengthNome()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -587,7 +587,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Inserindo e excluindo usuário válido. O esperado é Created e OK
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(14)]
+        [Fact, TestPriority(32)]
         public async Task InserindoUsuarioNomeRepetido()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);
@@ -609,7 +609,7 @@ namespace ProjetoAgenda.IntegrationTest.v1.UsuarioTeste
         /// Inserindo e excluindo usuário válido. O esperado é Created e OK
         /// </summary>
         /// <returns></returns>
-        [Fact, TestPriority(14)]
+        [Fact, TestPriority(33)]
         public async Task InserindoUsuarioEmailRepetido()
         {
             Usuario usuario = UsuarioInformacoesTeste.CriandoInformacoesUsuario(true, true, true);

@@ -2,6 +2,7 @@
 using ProjetoAgendaAPI.Libraries;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ProjetoAgendaAPI.Models
 {
@@ -18,28 +19,27 @@ namespace ProjetoAgendaAPI.Models
 
         [JsonProperty(PropertyName = "nome")]
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MandatoryField")]
-        [MinLength(4, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MinLength")]
+        [MinLength(2, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MinLength")]
         [MaxLength(256, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MaxLength")]
         [Column("nome")]
         public string Nome { get; set; }
 
         [JsonProperty(PropertyName = "sobrenome")]
-        [MinLength(4, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MinLength")]
         [MaxLength(256, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MaxLength")]
         [Column("sobrenome")]
         public string Sobrenome { get; set; }
 
         [JsonProperty(PropertyName = "telefone")]
-        [MinLength(14, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MinLength")]
         [MaxLength(15, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MaxLength")]
         [Column("telefone")]
         public string Telefone { get; set; }
 
-        [JsonProperty(PropertyName = "id_usuario")]
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MandatoryField")]
+        //[Range(1, int.MaxValue, ErrorMessageResourceName = "MandatoryField")]
         [Column("id_usuario")]
         [ForeignKey("Usuario")]
+        [JsonPropertyName("id_usuario")]
+        [JsonProperty("id_usuario")]
         public int IdUsuario { get; set; }
-        private Usuario Usuario { get; set; }
     }
 }

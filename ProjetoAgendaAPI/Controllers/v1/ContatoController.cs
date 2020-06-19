@@ -26,12 +26,12 @@ namespace ProjetoAgendaAPI.Controllers.v1
         /// <param name="idUsuario"></param>
         /// <returns></returns>
         [HttpGet("{id_usuario}")]
-        public async Task<ActionResult<IEnumerable<Contato>>> GetContato(int idUsuario)
+        public async Task<ActionResult<IEnumerable<Contato>>> GetContato(int id_usuario)
         {
-            if (idUsuario <= 0)
+            if (id_usuario <= 0)
                 return BadRequest();
 
-            IEnumerable<Contato> listaContato = await _contatoRepository.ObterTodosContatos(idUsuario);
+            IEnumerable<Contato> listaContato = await _contatoRepository.ObterTodosContatos(id_usuario);
 
             if (listaContato == null || listaContato.Count() == 0)
                 return NotFound();
@@ -46,12 +46,12 @@ namespace ProjetoAgendaAPI.Controllers.v1
         /// <param name="idUsuario"></param>
         /// <returns></returns>
         [HttpGet("{id}/{id_usuario}")]
-        public async Task<ActionResult<Contato>> GetContato(int id, int idUsuario)
+        public async Task<ActionResult<Contato>> GetContato(int id, int id_usuario)
         {
-            if (id <= 0 || idUsuario <= 0)
+            if (id <= 0 || id_usuario <= 0)
                 return BadRequest();
 
-            Contato contato = await _contatoRepository.ObterContato(id, idUsuario);
+            Contato contato = await _contatoRepository.ObterContato(id, id_usuario);
 
             if (contato == null || contato.Id == 0)
                 return NotFound();
@@ -116,9 +116,9 @@ namespace ProjetoAgendaAPI.Controllers.v1
         /// <param name="idUsuario"></param>
         /// <returns></returns>
         [HttpDelete("{id}/{id_usuario}")]
-        public ActionResult<Contato> DeleteContato(int id, int idUsuario)
+        public ActionResult<Contato> DeleteContato(int id, int id_usuario)
         {
-            if (_contatoRepository.Excluir(id, idUsuario))
+            if (_contatoRepository.Excluir(id, id_usuario))
                 return Ok();
             else
                 return NotFound();
