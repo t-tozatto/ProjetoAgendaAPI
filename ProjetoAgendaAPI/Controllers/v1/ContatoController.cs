@@ -115,7 +115,7 @@ namespace ProjetoAgendaAPI.Controllers.v1
         /// <param name="id"></param>
         /// <param name="idUsuario"></param>
         /// <returns></returns>
-        [HttpGet("{id}/{id_usuario}")]
+        [HttpDelete("{id}/{id_usuario}")]
         public ActionResult<Contato> DeleteContato(int id, int idUsuario)
         {
             if (_contatoRepository.Excluir(id, idUsuario))

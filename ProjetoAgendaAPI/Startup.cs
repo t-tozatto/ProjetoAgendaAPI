@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using ProjetoAgendaAPI.Database;
 using ProjetoAgendaAPI.Repositories;
 using ProjetoAgendaAPI.Repositories.Contracts;
-using System.Collections.Generic;
 
 namespace ProjetoAgendaAPI
 {
