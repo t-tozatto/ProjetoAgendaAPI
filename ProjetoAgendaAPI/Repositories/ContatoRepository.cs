@@ -29,7 +29,7 @@ namespace ProjetoAgendaAPI.Repositories
 
         public async Task<IEnumerable<Contato>> ObterTodosContatos(int idUsuario)
         {
-            return await _banco.Contato.Where(x => x.IdUsuario.Equals(idUsuario)).ToListAsync();
+            return await _banco.Contato.Where(x => x.IdUsuario.Equals(idUsuario)).OrderBy(x => x.Nome).ToListAsync();
         }
 
         public async Task<bool> Atualizar(Contato contato)
