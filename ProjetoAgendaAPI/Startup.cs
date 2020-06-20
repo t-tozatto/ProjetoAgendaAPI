@@ -53,6 +53,16 @@ namespace ProjetoAgendaAPI
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
+            using (var serviceScope = app.ApplicationServices
+            .GetRequiredService<IServiceScopeFactory>()
+            .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<AgendaContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }
