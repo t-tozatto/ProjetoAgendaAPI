@@ -35,7 +35,7 @@ namespace ProjetoAgendaAPI.Models
         public string Telefone { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MandatoryField")]
-        //[Range(1, int.MaxValue, ErrorMessageResourceName = "MandatoryField")]
+        [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MandatoryField")]
         [Column("id_usuario")]
         [ForeignKey("Usuario")]
         [JsonPropertyName("id_usuario")]

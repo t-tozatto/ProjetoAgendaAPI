@@ -56,7 +56,7 @@ namespace ProjetoAgendaAPI.Controllers.v1
             if (contato == null || contato.Id == 0)
                 return NotFound();
 
-            return contato;
+            return Ok(contato);
         }
 
         /// <summary>

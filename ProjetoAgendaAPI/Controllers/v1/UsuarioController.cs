@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetoAgendaAPI.Models;
@@ -72,7 +71,7 @@ namespace ProjetoAgendaAPI.Controllers.v1
             if (usuario == null || usuario.Id == 0)
                 return NotFound();
 
-            return usuario;
+            return Ok(usuario);
         }
 
         /// <summary>
@@ -97,8 +96,17 @@ namespace ProjetoAgendaAPI.Controllers.v1
 
             try
             {
+                int validacao = _usuarioRepository.UsuarioComNomeSenhaOuEmailRepetido(usuario);
+                if (validacao > 0)
+                {
+                    if (validacao == 1)
+                        return Problem("Já existe um usuário com esse nome.", nameof(PutUsuario), 406);
+                    else
+                        return Problem("Já existe um usuário utilizando esse e-mail.", nameof(PutUsuario), 406);
+                }
+
                 if (_usuarioRepository.Atualizar(usuario).Result)
-                    return Ok();
+                    return Ok(usuario);
                 else
                     return NotFound();
             }
