@@ -8,6 +8,7 @@ namespace ProjetoAgendaAPI.Repositories.Contracts
     {
         void Cadastrar(Usuario usuario);
         Task<Usuario> ObterUsuario(int id);
+        Usuario ObterUsuario(string email);
         Task<IEnumerable<Usuario>> ObterTodosUsuarios();
         Task<Usuario> Login(string nome, string senha);
         Task<bool> Atualizar(Usuario usuario);

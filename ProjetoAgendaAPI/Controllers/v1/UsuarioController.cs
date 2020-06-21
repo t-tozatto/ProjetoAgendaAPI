@@ -55,6 +55,25 @@ namespace ProjetoAgendaAPI.Controllers.v1
         }
 
         /// <summary>
+        /// GET: api/v1/usuario/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("recuperacao/{email}", Name = "GetEmailUsuario")]
+        public ActionResult<Usuario> GetEmailUsuario(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return BadRequest();
+
+            Usuario usuario = _usuarioRepository.ObterUsuario(email);
+
+            if (usuario == null || usuario.Id == 0)
+                return NotFound();
+
+            return Ok(usuario);
+        }
+
+        /// <summary>
         /// GET: api/v1/usuario/{nome}/{senha}
         /// </summary>
         /// <param name="nome"></param>

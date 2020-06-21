@@ -27,6 +27,11 @@ namespace ProjetoAgendaAPI.Repositories
             return await _banco.Usuario.FindAsync(id);
         }
 
+        public Usuario ObterUsuario(string email)
+        {
+            return _banco.Usuario.FirstOrDefault(x => x.Email.Equals(email));
+        }
+
         public async Task<IEnumerable<Usuario>> ObterTodosUsuarios()
         {
             return await _banco.Usuario.ToListAsync();
