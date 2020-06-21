@@ -32,9 +32,5 @@ namespace ProjetoAgendaAPI.Models
         [MaxLength(40, ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MaxLength")]
         [Column("senha")]
         public string Senha { get; set; }
-
-        [JsonProperty(PropertyName = "foto")]
-        [Column("foto")]
-        public byte[] Foto { get; set; }
     }
 }
