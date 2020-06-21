@@ -12,3 +12,4 @@ Pontos futuros de melhoria:
 - Adicionar foto no usuário.
 - Adicionar foto no contato.
 - Adicionar endereço no contato.
+- Realizar a documentação da API.
